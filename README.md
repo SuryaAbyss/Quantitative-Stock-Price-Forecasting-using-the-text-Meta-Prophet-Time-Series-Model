@@ -1,6 +1,6 @@
 # 📈 Stock Price Prediction Dashboard
 
-An interactive **React + Flask** dashboard that visualizes historical equity prices, forecasts future prices with **Prophet**, and benchmarks model performance across **50+ stock datasets**.
+An interactive **React + Flask** dashboard that visualizes historical equity prices, forecasts future prices with **Prophet**, and benchmarks model performance across **100+ stock datasets**.
 
 ---
 
