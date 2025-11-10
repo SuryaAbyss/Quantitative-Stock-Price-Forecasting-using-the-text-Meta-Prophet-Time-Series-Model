@@ -33,7 +33,7 @@ An interactive **React + Flask** dashboard that visualizes historical equity pri
   If a dataset CSV is missing, the app automatically fetches data from **yfinance**.
 
 > 🧠 **Modeling Algorithm:** Facebook/Meta **Prophet** with daily seasonality.  
-> Benchmarked across 50+ datasets for regression and directional performance.
+> Benchmarked across 100+ datasets for regression and directional performance.
 
 ---
 
