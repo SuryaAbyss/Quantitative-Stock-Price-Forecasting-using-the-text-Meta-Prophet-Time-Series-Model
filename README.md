@@ -53,15 +53,16 @@ An interactive **React + Flask** dashboard that visualizes historical equity pri
 
 ## 📂 Project Structure
 
-├── backend/ # Flask API (app.py)
-├── dataset/ # Stock CSVs named <SYMBOL>_data.csv
-├── frontend/ # React application
-│ └── src/
-│ ├── Dashboards/StockDashboard.jsx
-│ └── Dashboards/StockDashboard.css
-├── requirements.txt # Backend dependencies
+```
+├── backend/            # Flask API (app.py)
+├── dataset/            # Stock CSVs named <SYMBOL>_data.csv
+├── frontend/           # React application
+│   └── src/
+│       ├── Dashboards/StockDashboard.jsx
+│       └── Dashboards/StockDashboard.css
+├── requirements.txt    # Backend dependencies
 └── README.md
-
+```
 
 ---
 
@@ -76,69 +77,81 @@ An interactive **React + Flask** dashboard that visualizes historical equity pri
 From the project root:
 
 ### 1️⃣ Backend Setup
-
+```powershell
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-python backend/app.py
-Backend runs on: http://127.0.0.1:5000
+python backend\app.py
+```
+Backend runs on: `http://127.0.0.1:5000`
 
-2️⃣ Frontend Setup
-bash
-Copy code
+### 2️⃣ Frontend Setup
+```powershell
 cd frontend
 npm install
 npm start
-Frontend runs on: http://localhost:3000
+```
+Frontend runs on: `http://localhost:3000`
 
 If ports are busy, set:
-
-FLASK_RUN_PORT (backend)
-
-PORT (frontend)
+- `FLASK_RUN_PORT` (backend)
+- `PORT` (frontend)
 
 and adjust the frontend’s fetch URLs accordingly.
 
-🗂️ Dataset Format
-Place CSVs in the dataset/ directory with the following schema:
+---
 
-lua
-Copy code
+## 🗂️ Dataset Format
+
+Place CSVs in the `dataset/` directory with the following schema:
+
+```
 date,open,high,low,close,volume,Name
 2013-02-08,67.7142,68.4014,66.8928,67.8542,158168416,AAPL
 ...
-Symbol inferred from filename (AAPL_data.csv → AAPL)
+```
 
-/symbols → lists all available symbols
+- Symbol inferred from filename (`AAPL_data.csv` → `AAPL`)
+- `/symbols` → lists all available symbols
+- `/stock/<symbol>` → serves the last 30 days (CSV first, yfinance fallback)
+- `/predict/<symbol>` → trains Prophet on full history, forecasts 7 days
+- `/metrics/<symbol>` → computes regression + classification metrics on a 30-day holdout
 
-/stock/<symbol> → serves the last 30 days (CSV first, yfinance fallback)
+---
 
-/predict/<symbol> → trains Prophet on full history, forecasts 7 days
+## 🔌 REST API Endpoints
 
-/metrics/<symbol> → computes regression + classification metrics on a 30-day holdout
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/symbols` | GET | List all dataset symbols |
+| `/stock/<symbol>` | GET | Last 30 days of historical price/volume |
+| `/predict/<symbol>` | GET | 7-day Prophet forecast (`ds`, `yhat`) |
+| `/metrics/<symbol>` | GET | Regression + classification metrics |
 
-🔌 REST API Endpoints
-Route	Method	Description
-/symbols	GET	List all dataset symbols
-/stock/<symbol>	GET	Last 30 days of historical price/volume
-/predict/<symbol>	GET	7-day Prophet forecast (ds, yhat)
-/metrics/<symbol>	GET	Regression + classification metrics
+### 📉 Regression Metrics
+- MAE
+- RMSE
+- MAPE
+- R²
 
-📉 Regression Metrics
-MAE, RMSE, MAPE, R²
+### 📈 Directional Metrics
+- Accuracy
+- Precision
+- Recall
+- F1  
 
-📈 Directional Metrics
-Accuracy, Precision, Recall, F1
+Confusion Matrix → `{tn, fp, fn, tp}`  
+(Direction = whether `close[t] > close[t-1]`)
 
-Confusion Matrix → {tn, fp, fn, tp}
-(Direction = whether close[t] > close[t-1])
+---
 
-🧪 Benchmarking Prophet Across 50+ Datasets
-The app supports bulk benchmarking across all available datasets automatically.
+## 🧪 Benchmarking Prophet Across 50+ Datasets
+
+The app supports bulk benchmarking across all available datasets automatically.  
 You can benchmark Prophet’s performance across every symbol using this helper script.
 
-📜 benchmark_all_symbols.py
-python
-Copy code
+### 📜 `benchmark_all_symbols.py`
+
+```python
 import requests, pandas as pd
 
 BASE = "http://127.0.0.1:5000"
@@ -172,77 +185,72 @@ for sym in symbols:
 df = pd.DataFrame(rows).sort_values(["F1", "R2"], ascending=False)
 df.to_csv("prophet_benchmark_50plus.csv", index=False)
 print(f"✅ Saved prophet_benchmark_50plus.csv with {len(df)} symbols")
+```
+
 💡 This produces a CSV ranking Prophet’s regression and classification performance across 50+ symbols.
-
-Optional Future Work
-Add additional algorithms for multi-model comparison:
-
-Naïve (last value)
-
-SMA / EMA
-
-ARIMA / SARIMA
-
-XGBoost on engineered features
-
-🎨 Frontend Notes
-The glassmorphism metrics overlay is defined in StockDashboard.css under .metricsOverlay.
-You can tweak the blur, opacity, and saturation to your liking.
-
-Prophet models are fit on demand (first call per symbol may take a few seconds).
-
-To improve speed, cache or persist:
-
-Forecasts
-
-Metrics results (e.g., daily refresh)
-
-🧩 Backend Summary
-Your Flask backend provides:
-
-Dataset auto-discovery
-
-30-day recent history retrieval
-
-Prophet-based 7-day forecasts
-
-Metrics computation (regression + directional)
-
-yfinance fallback
-
-You can easily extend it with /metrics_all or /predict_all for bulk operations.
-
-🔐 Production Tips
-Deploy Flask behind gunicorn or uWSGI
-
-Use HTTPS
-
-Cache Prophet outputs to avoid recomputation
-
-Add rate limiting if deploying public-facing APIs
-
-📝 License
-Choose a license that fits your use case (e.g., MIT or Apache 2.0).
-
-🖼 Screenshots
-
-
-💡 Summary
-This dashboard provides:
-
-Automated discovery of 50+ stock datasets
-
-Prophet-based forecasting and performance metrics
-
-RESTful API ready for expansion
-
-Elegant, interactive frontend for finance analytics
-
-Perfect foundation for extending into a multi-algorithm financial prediction platform.
-
-yaml
-Copy code
 
 ---
 
-Would you like me to **add a short section showing a sample Recharts + glassmorphism metrics overlay JSX component**
+### Optional Future Work
+
+Add additional algorithms for multi-model comparison:
+- Naïve (last value)
+- SMA / EMA
+- ARIMA / SARIMA
+- XGBoost on engineered features
+
+---
+
+## 🎨 Frontend Notes
+- The glassmorphism metrics overlay is defined in `StockDashboard.css` under `.metricsOverlay`.
+- You can tweak the blur, opacity, and saturation to your liking.
+- Prophet models are fit on demand (first call per symbol may take a few seconds).
+- To improve speed, cache or persist:
+  - Forecasts
+  - Metrics results (e.g., daily refresh)
+
+---
+
+## 🧩 Backend Summary
+
+Your Flask backend provides:
+- Dataset auto-discovery
+- 30-day recent history retrieval
+- Prophet-based 7-day forecasts
+- Metrics computation (regression + directional)
+- yfinance fallback
+
+You can easily extend it with `/metrics_all` or `/predict_all` for bulk operations.
+
+---
+
+## 🔐 Production Tips
+- Deploy Flask behind gunicorn or uWSGI
+- Use HTTPS
+- Cache Prophet outputs to avoid recomputation
+- Add rate limiting if deploying public-facing APIs
+
+---
+
+## 📝 License
+
+Choose a license that fits your use case (e.g., MIT or Apache 2.0).
+
+---
+
+## 🖼 Screenshots
+
+![Dashboard Overview](/assets/s1.png)
+![Predictions & Metrics](/assets/s2.png)
+
+---
+
+## 💡 Summary
+
+This dashboard provides:
+- Automated discovery of 50+ stock datasets
+- Prophet-based forecasting and performance metrics
+- RESTful API ready for expansion
+- Elegant, interactive frontend for finance analytics
+
+Perfect foundation for extending into a multi-algorithm financial prediction platform.
