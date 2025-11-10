@@ -53,7 +53,6 @@ An interactive **React + Flask** dashboard that visualizes historical equity pri
 
 ## 📂 Project Structure
 
-.
 ├── backend/ # Flask API (app.py)
 ├── dataset/ # Stock CSVs named <SYMBOL>_data.csv
 ├── frontend/ # React application
