@@ -62,8 +62,6 @@ An interactive **React + Flask** dashboard that visualizes historical equity pri
 ├── requirements.txt # Backend dependencies
 └── README.md
 
-yaml
-Copy code
 
 ---
 
