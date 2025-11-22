@@ -212,4 +212,5 @@ def home():
     return "Backend is running! Try /symbols"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8000))  # get port from Railway
+    app.run(host="0.0.0.0", port=port)        # listen on all addresses
