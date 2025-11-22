@@ -10,11 +10,8 @@
 
 > An interactive React + Flask dashboard that visualizes historical equity prices, forecasts future prices with Prophet, and benchmarks model performance across large collections of stock datasets.
 
-## 🌟 Demo
 
-![Dashboard Screenshot](https://via.placeholder.com/800x400/1a1a2e/16213e?text=Stock+Price+Prediction+Dashboard)
-
-**Live Demo:** [https://your-frontend.vercel.app](https://your-frontend.vercel.app)
+**Live Demo:** (https://quantitative-stock-price-forecastin-puce.vercel.app/)
 
 ## 🚀 Key Features
 
@@ -206,9 +203,6 @@ The backend auto-detects symbols from the dataset directory.
 
 Included helper script benchmarks Prophet across all datasets.
 
-```bash
-python benchmark.py
-```
 
 ## 🔐 Production Tips
 
@@ -251,10 +245,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📞 Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_twitter) - your.email@example.com
+Your Name - [@SuryaPr03120418]([https://twitter.com/your_twitter](https://x.com/SuryaPr03120418?t=p1aZfGBxexAm0IMuLY48UQ&s=09)) - suryaparakash907y@example.com
 
-Project Link: [https://github.com/username/stock-prediction-dashboard](https://github.com/username/stock-prediction-dashboard)
-
----
+Project Link: [https://github.com/SuryaAbyss/Quantitative-Stock-Price-Forecasting-using-the-text-Meta-Prophet-Time-Series-Model](https://github.com/SuryaAbyss/Quantitative-Stock-Price-Forecasting-using-the-text-Meta-Prophet-Time-Series-Model)
 
 ⭐️ **Star this repo if it helped you!** ⭐️
