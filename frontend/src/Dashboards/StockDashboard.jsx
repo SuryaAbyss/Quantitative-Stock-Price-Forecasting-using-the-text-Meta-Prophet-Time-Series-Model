@@ -5,6 +5,7 @@ import {
 import { TrendingUp, TrendingDown, IndianRupee, BarChart3 } from 'lucide-react';
 import './StockDashboard.css';
 
+const API_BASE = "https://quantitative-stock-price-forecasting-using-the-t-production.up.railway.app";
 const USD_TO_INR = 83; // approximate conversion; adjust as needed
 const currencyFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
@@ -58,7 +59,7 @@ const StockDashboard = () => {
 
   useEffect(() => {
     // Fetch symbols from backend dataset
-    fetch(`http://127.0.0.1:5000/symbols`)
+    fetch(`${API_BASE}/symbols`)
       .then(res => res.json())
       .then(items => {
         setCompanies(items);
@@ -77,9 +78,9 @@ const StockDashboard = () => {
     setSelectedStock(company);
 
     Promise.all([
-      fetch(`http://127.0.0.1:5000/stock/${company.symbol}`).then(res => res.json()),
-      fetch(`http://127.0.0.1:5000/predict/${company.symbol}`).then(res => res.json()),
-      fetch(`http://127.0.0.1:5000/metrics/${company.symbol}`).then(res => res.json())
+      fetch(`${API_BASE}/stock/${company.symbol}`).then(res => res.json()),
+      fetch(`${API_BASE}/predict/${company.symbol}`).then(res => res.json()),
+      fetch(`${API_BASE}/metrics/${company.symbol}`).then(res => res.json())
     ])
       .then(([historicalData, predictionData, metricsData]) => {
         const convertedHistorical = (historicalData || []).map(d => ({
